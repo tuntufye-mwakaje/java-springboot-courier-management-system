@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Courier Details</title>
+    
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+	<link th:href="@{/css/toast.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/custom_table.css}">
+    
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"> -->
+  
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    
+
+</head>
+
+
+
+<body>
+    <main class="d-flex">
+    
+     <!-- Sidebar -->
+        <div th:replace="Layout/Fragments/header.html :: header"></div>
+        <!-- /Sidebar -->
+
+        <!-- Body  -->
+		<div class="main-content  p-0">
+
+			<div th:replace="Layout/Fragments/header.html :: topbar"></div>
+
+			<!-- Main Page Data  -->
+			<div class="container-fluid px-3 p-0 pb-5">
+				<div
+					class="d-flex flex-wrap gap-2 page-header justify-content-between align-items-center">
+					<h3 class="page-heading">View Courier Detail(s)</h3>
+					<p class="header-date m-0 " id="current-date"></p>
+				</div>
+
+				<div class="d-flex mb-3">
+					<a href="#" class="back-arrow pback" onclick="goBack()"> <i
+						class="ri-arrow-left-line"></i> <span class="text-danger px-3">Back to
+							Previous Page</span>
+					</a>
+				</div>
+
+				<!-- Main Data Container -->
+				<div class="data-container p-4 bg-primary-subtle">
+					<div class="row justify-content-center">
+						<div class="col-md-11 ">
+
+							<!-- Print PDFs Row  -->
+							<div class="row differ my-3">
+								<div class="col-md-12  bg-primary-subtle py-3">
+									<div class="head">Shipment Detail(s)</div>
+								<hr>
+								</div>
+								<div class="col-md-12 mt-3 ">
+									<table 
+										class="table table-bordered table-primary">
+										<tbody>
+											<tr>
+												<td class="table-head">Full Detail(s)</td>
+												<td class="table-text"><a th:href="@{/courier/courierPdf/{id}(id=${courier.id})}" class="small-btn">PDF
+														<span><i class="ri-printer-line px-2"
+															style="font-size: 16px;"></i></span>
+												</a></td>
+												<td class="table-head">Packing Sticker(s)</td>
+												<td class="table-text"><a href="#" class="small-btn">PDF
+														<span><i class="ri-printer-line px-2"
+															style="font-size: 16px;"></i></span>
+												</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+
+							<!-- 2nd Row Sender and Reciver Details (Sender/Consignor Detail) -->
+							<div class="row gx-5">
+								<!-- Sender Detail Table -->
+								<div class="col-md-6  my-2  ">
+									<div class="row differ">
+										<div class="col-md-12 py-3">
+											<div class="head"> Sender/Consignor Detail(s)</div>
+										<!-- 	<hr> -->
+										</div>
+										<div class="col-md-12 mt-2">
+											<table class="table table-bordered table-primary">
+												<tbody>
+
+													<tr>
+														<td class="table-head">Name</td>
+														<td class="table-text" th:text="${courier.senderName}">Mr.X</td>
+													</tr>
+													<tr>
+														<td class="table-head">Phone</td>
+														<td class="table-text" th:text="${courier.senderPhone}">9001XXXX65</td>
+													</tr>
+													<tr>
+														<td class="table-head">Email Id</td>
+														<td class="table-text" th:text="${courier.senderEmailId}">me@kuldeepsaini.in</td>
+													</tr>
+													<tr>
+														<td class="table-head">AddressLine 1</td>
+														<td class="table-text" th:text="${courier.senderAddressLine1}">3L93E9100012</td>
+													</tr>
+													<tr>
+														<td class="table-head">AddressLine 2</td>
+														<td class="table-text" th:text="${courier.senderAddressLine2}">3L93E9100012</td>
+													</tr>
+													<tr>
+														<td class="table-head">Country</td>
+														<td class="table-text" th:text="${courier.senderDistrict.state.country.countryName}">India</td>
+													</tr>
+													<tr>
+														<td class="table-head">State</td>
+														<td class="table-text" th:text="${courier.senderDistrict.state.stateName}">No Idea</td>
+													</tr>
+													<tr>
+														<td class="table-head">District</td>
+														<td class="table-text" th:text="${courier.senderDistrict.districtName}">Hanumangrah Town</td>
+													</tr>
+													<tr>
+														<td class="table-head">City/Town</td>
+														<td class="table-text" th:text="${courier.senderCity}">Gangland Town</td>
+													</tr>
+													<tr>
+														<td class="table-head" >Pincode/Zipcode</td>
+														<td class="table-text" th:text="${courier.senderPincode}">335513</td>
+													</tr>
+													<tr>
+														<td class="table-head" >Landmark</td>
+														<td class="table-text" th:text="${courier.senderLandmark}"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<!-- Receiver Detail Table -->
+								
+								<div class="col-md-6  my-2">
+									<div class="row differ">
+										<div class="col-md-12  bg-primary-subtle py-3">
+											<div class="head ">Receiver/Consignee Detail(s)</div>
+										</div>
+										<div class="col-md-12 mt-2">
+											<table class="table table-bordered table-primary" >
+												<tbody>
+
+													<tr>
+														<td class="table-head">Name</td>
+														<td class="table-text" th:text="${courier.receiverName}">Mr.X</td>
+													</tr>
+													<tr>
+														<td class="table-head">Phone</td>
+														<td class="table-text" th:text="${courier.receiverPhone}">9001XXXX65</td>
+													</tr>
+													<tr>
+														<td class="table-head">Email Id</td>
+														<td class="table-text" th:text="${courier.receiverEmailId}">me@kuldeepsaini.in</td>
+													</tr>
+													<tr>
+														<td class="table-head">AddressLine 1</td>
+														<td class="table-text" th:text="${courier.receiverAddressLine1}">3L93E9100012</td>
+													</tr>
+													<tr>
+														<td class="table-head">AddressLine 2</td>
+														<td class="table-text" th:text="${courier.receiverAddressLine2}">3L93E9100012</td>
+													</tr>
+													<tr>
+														<td class="table-head">Country</td>
+														<td class="table-text" th:text="${courier.receiverDistrict.state.country.countryName}">India</td>
+													</tr>
+													<tr>
+														<td class="table-head">State</td>
+														<td class="table-text" th:text="${courier.receiverDistrict.state.stateName}">No Idea</td>
+													</tr>
+													<tr>
+														<td class="table-head">District</td>
+														<td class="table-text" th:text="${courier.receiverDistrict.districtName}">Hanumangrah Town</td>
+													</tr>
+													<tr>
+														<td class="table-head">City/Town</td>
+														<td class="table-text" th:text="${courier.receiverCity}">Gangland Town</td>
+													</tr>
+													<tr>
+														<td class="table-head">Pincode/Zipcode</td>
+														<td class="table-text" th:text="${courier.receiverPincode}">335513</td>
+													</tr>
+													<tr>
+														<td class="table-head">Landmark</td>
+														<td class="table-text" th:text="${courier.receiverLandmark}"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								
+								
+
+							</div>
+							<!-- 2nd Row End-->
+
+
+							
+							
+							<!-- 3rd Row start-->
+							
+							<div class="row differ my-2">
+								<div class="col-md-12  table-primary py-3">
+									<div class="head ">Shipping Detail(s)</div>
+								</div>
+								<div class="col-md-12 col-lg-12 px-1 py-0">
+									<table class="table table-bordered table-primary">
+										<tbody>
+											<tr>
+												<td class="table-head">Issued By</td>
+												<td class="table-text">N/A</td>
+												<td></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td class="table-head">Booking Date</td>
+												<td class="table-text" th:text="${courier.date}">2023-09-22 16:20:00.0</td>
+												<td class="table-head">Tracking Code</td>
+												<td class="table-text" th:text="${courier.trackingCode}">3L93E9100012</td>
+											</tr>
+											<tr>
+												<td class="table-head">Booking Code</td>
+												<td class="table-text" th:text="${courier.bookingCode}">Dooley</td>
+												<td class="table-head">Dooley</td>
+												<td class="table-text">july@example.com</td>
+											</tr>
+											<tr>
+												<td class="table-head">Expected Delivery</td>
+												<td class="table-text" th:text="${courier.expectedDelivery}">2023-09-26 16:30:00.0</td>
+												<td class="table-head">Courier Service</td>
+												<td class="table-text" th:text="${courier.courierService}">Normal</td>
+											</tr>
+											<tr>
+												<td class="table-head">Consignment Description</td>
+												<td class="table-text" th:text="${courier.description}">description</td>
+												<td class="table-head">Declared Value</td>
+												<td class="table-text"></td>
+											</tr>
+											<tr>
+												<td class="table-head">Consignment Type</td>
+												<td class="table-text" th:text="${courier.consignmentType}">Bag</td>
+												<td class="table-head">No. of Piece(s)</td>
+												<td class="table-text" th:text="${courier.noOfPieces}">2.00</td>
+											</tr>
+											<tr>
+												<td class="table-head">Courier Mode</td>
+												<td class="table-text" th:text="${courier.courierMode}">By Road</td>
+												<td class="table-head">Hazardous Material ?</td>
+												
+												<td class="table-text" th:text="${courier.hazardious}? Yes : No"></td>
+											</tr>
+											<tr>
+												<td class="table-head">Courier Center</td>
+												<td class="table-text" th:text="${courier.courierCenter}" >Maza Maza Courier</td>
+												<td class="table-head" >Explanation</td>
+												<td class="table-text" th:text="${courier.explanation==null}? Na : ${courier.explanation}">contains led batteries</td>
+											</tr>
+											<tr>
+												<td class="table-head">Total Weight(gm)</td>
+												<td class="table-text" th:text="${courier.totalWeight}">Maza Maza Courier</td>
+												<td class="table-head">Total Distance(km)</td>
+												<td class="table-text" th:text="${courier.distance}">1030.80</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- 4th Row Shipment Detail Table End -->
+
+
+							<!-- 5th Row  Charges Row -->
+							<div class="row differ my-2">
+								<div class="col-md-12  bg-primary-subtle py-3">
+									<div class="head ">Charges Details</div>
+								</div>
+								<div class="col-md-12 col-lg-12 px-1 py-0">
+									<table class="table table-bordered table-primary">
+										<tbody>
+
+											<tr>
+												<td class="table-head">Courier Charges (₹)</td>
+												<td class="table-text" th:text="${courier.charges}">5000.00</td>
+												<td class="table-head">Tax Type</td>
+												<td class="table-text" th:text="${courier.taxType}">VAT</td>
+											</tr>
+											<tr>
+												<td class="table-head">Tax Amount (₹)</td>
+												<td class="table-text" >250.00</td>
+												<td class="table-head">Tax %</td>
+												<td class="table-text" th:text="${courier.taxPercentage}">5.00</td>
+											</tr>
+											<tr>
+												<td class="table-head">Discount Type</td>
+												<td class="table-text" th:text="${courier.discountType}"></td>
+												<td class="table-head">Discount Amount</td>
+												<td class="table-text">638</td>
+<!-- 												<td class="table-head">Total Discount % Applied</td>
+												<td class="table-text">9001050666565</td> -->
+											</tr>
+											<tr>
+												<td class="table-head">Final Charges / Paid Amount (₹)</td>
+												<td class="table-text" th:text="${courier.finalCharges}">5250.0 / 5250.0</td>
+												<td class="table-head"></td>
+												<td class="table-text"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+
+
+							<!-- 5th Row  Charges Row -->
+							<div class="row differ my-2">
+								<div class="col-md-12  bg-primary-subtle py-3">
+									<div class="head">Charges Details</div>
+								</div>
+								<div class="col-md-12 col-lg-12 px-1 py-0">
+									<table class="table table-bordered mt-2 table-primary">
+										<tbody>
+											<tr>
+												<td class="table-head">Courier Charges (₹)</td>
+												<td class="table-text">5000.00</td>
+												<td class="table-text">5000.00</td>
+												<td class="table-text">5000.00</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <!-- Custom Js Files  -->
+     <script th:src="@{/js/custom.js}"></script>
+
+
+    <!-- Go Back Button JS -->
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+</body>
+
+</html>

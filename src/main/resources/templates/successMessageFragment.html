@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Success Message Fragment</title>
+</head>
+<body>
+	<div th:fragment="successMessage" th:if="${successMessage}">
+		<div class="alert alert-success text-center" role="alert">
+			<p th:text="${successMessage}"></p>
+		</div>
+	</div>
+	
+	
+	
+	
+</body>
+</html>

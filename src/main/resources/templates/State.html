@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
+<title>Country</title>
+
+
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+		integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
+	<!-- Remix Icon CDN -->
+	<link
+		href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+		rel="stylesheet" />
+
+	<link th:href="@{/css/style.css}" rel="stylesheet">
+	<link th:href="@{/css/toast.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/custom_table.css}">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> 
+
+</head>
+<body style="background-color: gray;">
+
+
+
+
+		<!-- Sidebar -->
+		<div th:replace="Layout/Fragments/header.html :: header"></div>
+		<!-- Sidebar Ended Here  -->
+
+<div class="main-content  p-0">
+	<div th:replace="Layout/Fragments/header.html :: topbar"></div>
+
+	<div class="container-fluid row pb-3 d-flex justify-content-center mt-5">
+	
+	
+	
+<!-- <div class="ms-5 col-md-12">
+
+<div class="   "> -->
+			<div class="ms-5 col-md-8 p-4 border mb-4">
+				<div class="panel">
+					<div class="panel-heading">
+						
+						<div style="padding-top: 30px" class="panel-body">
+							
+							<form id="loginform" class="form-horizontal"
+						th:action="@{saveState}" th:object="${state}" method="post">
+
+						<input type="text" hidden="" th:field="*{id}">
+						<div style="margin-bottom: 20px" class="input-group justify-content-center">
+						
+						
+
+							<div>
+								<span th:if="${#fields.errors('country.id')}"
+									th:errors="*{country.id}" th:errorClass="error">Field
+									ERROR</span>
+							</div>
+
+						</div>
+
+                     <div style="margin-bottom: 25px" class="input-group">
+							<label class="me-3"> State Name</label> 
+							<select class="form-control" th:field="*{country.id}"
+								aria-label="Default select example"
+								style="width: 273px; height: 35px;">
+
+								
+								<option value="">select Country</option>
+								<option th:each="i : ${countryList}" th:value="${i.id}"
+									th:text="${i.CountryName}"></option>
+
+							</select>
+							<div></div>
+
+						</div>
+
+						<div style="margin-bottom: 25px" class="input-group">
+							<label class="me-3"> State Name</label> <input id="countrycode" type="text"
+								th:field="*{stateName}" class="form-control" placeholder="">
+							<div></div>
+
+						</div>
+						<span th:if="${#fields.errors('stateName')}"
+							th:errors="*{stateName}" th:errorClass="error">Field ERROR</span>
+
+						<div style="margin-top: 10px" class="form-group">
+							<!-- Button -->
+
+							<div class="col-sm-12 controls text-center">
+
+								<button type="reset" class="btn btn-reset">Cancel</button>
+
+								<button type="submit" class="btn btn-primary">Save</button>
+							</div>
+						</div>
+					</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+<div class="container-fluid row pb-3 d-flex justify-content-center">
+			<div class="col-md-12 ms-5">
+				<div class="card">
+					<div class="card-body">
+							<table class="table" border="3" >
+								<thead>
+									<tr>
+										<td >Id</td>
+										<td>Country Name</td>
+										<td>State Name</td>
+										<td colspan="2">Update/Delete</td>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr th:each="i : *{stateList}">
+										<td th:text="*{i.id}"></td>
+										<td th:text="*{i.country.countryName}" />
+										<td th:text="*{i.stateName}"></td>
+
+										<td><a th:href="@{update(id=${i.id})}"
+											class="btn btn-success">Update</a> <a
+											th:href="@{delete(id=${i.id})}" class="btn btn-danger">Delete</a>
+										<td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+
+	
+
+	
+	
+	<script th:src="@{/js/custom.js}"></script>
+	
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courier Managment</title>
+
+	<link th:href="@{/css/style.css}" rel="stylesheet">
+	<link th:href="@{/css/toast.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/custom_table.css}">
+	
+	
+<!--     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"> -->
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+
+
+
+<body>
+    <main class="d-flex">
+        <!-- Sidebar -->
+        <div th:replace="~{Layout/Fragments/header.html :: header}"></div>
+        <!-- /Sidebar -->
+
+        <!-- Body  -->
+        <div class="main-content p-0">
+            <div th:replace="~{Layout/Fragments/header.html :: topbar}"></div>
+            
+        <!-- Message -->
+		
+			<!-- Positive Message -->
+			<div th:if="${positiveMessage}">
+				<div th:replace="~{Layout/Fragments/message.html :: positiveMessage}"></div>
+			</div>
+			
+			<!-- Negative Message -->
+			<div th:if="${negativeMessage}">
+				<div th:replace="~{Layout/Fragments/message.html :: negativeMessage}"></div>	
+			</div>
+
+		<!-- /Message -->
+            
+            
+            
+
+            <!-- Main Page Data  -->
+            <div class="container-fluid px-3 p-0 pb-5">
+                <div class="d-flex flex-wrap gap-2 page-header justify-content-between align-items-center">
+                    <h3 class="page-heading">
+                        Courier &#x276F; Booking &#x276F; View Courier
+                    </h3>
+                    <p class="header-date m-0 " id="current-date"></p>
+                </div>
+
+                <div class="d-flex mb-3">
+                    <a href="#" class="back-arrow pback" onclick="goBack()" >
+                        <i class="ri-arrow-left-line"></i> <span class="text-danger px-3">Back to Previous Page</span>
+                    </a>
+                </div>
+
+                <!-- Main Data Container -->
+                <div class="data-container p-4  bg-primary-subtle">
+                    <div class="row justify-content-center">
+                        <div class="col-md-11 ">
+
+                            <!-- Print PDFs Row  -->
+                            <!-- <div class="row differ my-3 ">
+                                <div class="row gap-2 align-items-end my-3">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="mini-head mb-1">
+                                            Search By
+                                        </div>
+                                        <div class="d-flex gap-2 flex-wrap justify-content-center mybdr-secondary bg-white "
+                                            style="border-radius: 7px; padding: 5px 10px;">
+                                            <div class="switch-btn  switch-active">
+                                                <span class="switch-span"><i class="ri-book-line"></i></span> Client
+                                                Name
+                                            </div>
+                                            <div class="switch-btn">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Booking
+                                                Code
+                                            </div>
+                                            <div class="switch-btn">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span>
+                                                Tracking Code
+                                            </div>
+                                            <div class="switch-btn">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Booking
+                                                Date(YYYY-MM-DD)
+                                            </div>
+                                            <div class="switch-btn">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Between
+                                                Dates
+                                            </div>
+                                            <div class="switch-btn">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Courier
+                                                Status
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-5 col-sm-5">
+                                            <div class="d-flex flex-column">
+                                                <div class="mini-head mb-1">
+                                                    Search Client
+                                                </div>
+                                                <div id="client-name-searchbox" style="display: block;">
+                                                    <div class="d-flex gap-2">
+                                                        <input type="text"
+                                                            class="org-control-input form-control org-form-input"
+                                                            placeholder="Search By Client Name">
+                                                        <button type="submit" class="btn btn-success  ">Search</button>
+                                                    </div>
+                                                </div>
+                                                <div id="booking-code-searchbox" style="display: none;">
+                                                    <div class="d-flex gap-2">
+                                                        <input type="text"
+                                                            class="org-control-input form-control org-form-input"
+                                                            placeholder="Search By Client Name">
+                                                        <button type="submit" class="btn btn-success  ">Search</button>
+                                                    </div>
+                                                </div>
+                                                <div id="tracking-code-searchbox" style="display: none;">
+                                                    <div class="d-flex gap-2">
+                                                        <input type="text"
+                                                            class="org-control-input form-control org-form-input"
+                                                            placeholder="Search By Client Name">
+                                                        <button type="submit" class="btn btn-success  ">Search</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            
+                            
+                            <div class="row differ my-3">
+                                <div class="row gap-2 align-items-end my-3">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="mini-head mb-1">
+                                            Search By
+                                        </div>
+                                        <div class="d-flex gap-2 flex-wrap justify-content-center mybdr-secondary bg-white "
+                                            style="border-radius: 7px; padding: 5px 10px;">
+                                            <div class="switch-btn switch-active" data-target="client-name">
+                                                <span class="switch-span"><i class="ri-book-line"></i></span> Client
+                                                Name
+                                            </div>
+                                            <div class="switch-btn" data-target="booking-code-searchbox">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Booking
+                                                Code
+                                            </div>
+                                            <div class="switch-btn" data-target="tracking-code-searchbox">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span>
+                                                Tracking Code
+                                            </div>
+                                            <div class="switch-btn" data-target="booking-date-searchbox">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Booking
+                                                Date
+                                            </div>
+                                            <div class="switch-btn" data-target="between-date-searchbox">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Between
+                                                Dates
+                                            </div>
+                                            <div class="switch-btn" data-target="courier-status-searchbox">
+                                                <span class="switch-span"><i class="ri-archive-line"></i></span> Courier Status
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-5 col-sm-5">
+                                            <div class="d-flex flex-column">
+                                                <div class="mini-head mb-1">
+                                                    Search Client
+                                                </div>
+                                                
+                                                <div id="client-name" class="search-box" style="display: block;">
+													<form th:action="@{searchCourier}" method="get">
+														<div class="d-flex gap-2">
+															<input type="text" name="clientName"
+																id="clientName"
+																class="form-control org-form-input add-org-form-input"
+																placeholder="Search By client Name"> 
+																
+																<input
+																type="submit" class="btn btn-success p-1" value="Submit"
+																style="font-size: 14px;">
+
+														</div>
+													</form>
+												</div>
+                                                
+                                                <div id="booking-code-searchbox" class="search-box"
+                                                    style="display: none;">
+                                                    <form th:action="@{searchCourier}" method="get">
+                                                    <div class="d-flex gap-2">
+                                                        <input type="text" name="bookingCode" id="bookingCode"
+                                                            class="form-control org-form-input add-org-form-input"
+                                                            placeholder="Search By Booking Code">
+                                                        <button type="submit" class="btn btn-success p-1 "
+                                                            style="font-size: 14px;">Search</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+
+                                                <div id="tracking-code-searchbox" class="search-box"
+                                                    style="display: none;">
+                                                    <form th:action="@{searchCourier}" method="get">
+                                                    <div class="d-flex gap-2">
+                                                        <input type="text" name="trackingCode" id="trackingCode"
+                                                            class="form-control org-form-input add-org-form-input"
+                                                            placeholder="Search By Tracking Code">
+                                                        <button type="submit" class="btn btn-success p-1 "
+                                                            style="font-size: 14px;">Search</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+
+                                                <div id="booking-date-searchbox" class="search-box"
+                                                    style="display: none;">
+                                                    <form th:action="@{searchCourier}" method="get">
+                                                    <div class="d-flex gap-2">
+                                                    	<input type="date" name="bookingDate" id="bookingDate"
+                                                                class="form-control org-form-input add-org-form-input"
+                                                                placeholder="Search By Booking Date">
+                                                                
+                                                        <!-- <input type="text" name="bookingDate" id="bookingDate"
+                                                            class="form-control org-form-input add-org-form-input"
+                                                            placeholder="Search By Booking Date"> -->
+                                                        <button type="submit" class="btn btn-success p-1 "
+                                                            style="font-size: 14px;">Search</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                                <div id="courier-status-searchbox" class="search-box"
+                                                    style="display: none;">
+                                                    <form th:action="@{searchCourier}" method="get">
+                                                    <div class="d-flex gap-2">
+                                                            <select name="courierStatus" id="courierStatus" class="form-select org-form-input add-org-form-input">
+                                                                <option value="">Select</option>
+                                                                <option value="Booked">Booked</option>
+                                                            </select>
+                                                        <button type="submit" class="btn btn-success p-1 "
+                                                            style="font-size: 14px;">Search</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+
+                                                <div id="between-date-searchbox" class="search-box"
+                                                    style="display: none;">
+                                                    <form th:action="@{searchCourier}" method="get">
+                                                    <div class="d-flex gap-2">
+                                                        <div class="d-flex flex-column">
+                                                            <label for="start-date" style="font-size: 12px;">Start Date</label>
+                                                            <input type="date" name="startDate" id="startDate"
+                                                                class="form-control org-form-input add-org-form-input"
+                                                                placeholder="Start Date">
+                                                        </div>
+                                                        <div class="d-flex flex-column">
+                                                            <label for="end-date" style="font-size: 12px;">End Date</label>
+                                                            <input type="date" name="endDate" id="endDate"
+                                                            class="form-control org-form-input add-org-form-input"
+                                                            placeholder="End Date">
+                                                        </div>
+                                                       
+                                                        <div class="d-flex flex-column justify-content-end">
+                                                            <button type="submit" class="btn btn-success p-1 "
+                                                            style="font-size: 14px;">Search</button>
+                                                        </div>
+                                                        
+                                                       
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                                <!-- Add other search boxes with unique IDs -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Row Start-->
+                            <div class="row differ my-2 bg-primary-subtle">
+                                <div class="col-md-12 py-3">
+                                    <div class="head ">
+                                        Courier(s) - Search List
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12 px-1 py-0">
+                                    <table class="table table-bordered mt-2 table-hover">
+                                        <thead>
+                                            <tr class="table-primary">
+                                                <td class="table-head">S.No.</td>
+                                                <td class="table-head">Booking Date</td>
+                                                <td class="table-head">Expected Date</td>
+                                                <td class="table-head">Client's Name</td>
+                                                <td class="table-head">Client's Mob</td>
+                                                <td class="table-head">Tracking Code</td>
+                                                <td class="table-head">Current Status</td>
+                                                <td class="table-head">Action</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="courier : ${couriers}">
+                                                <td class="table-text" th:text="${courier.id}"></td>
+                                                <td class="table-text" th:text="${courier.date}"></td>
+                                                <td class="table-text" th:text="${courier.expectedDelivery}"></td>
+                                                <td class="table-text" th:text="${courier.customer.name}"></td>
+                                                <td class="table-text" th:text="${courier.customer.mobNo}"></td>
+                                                <td class="table-text" th:text="${courier.trackingCode}"></td>
+                                                <td class="table-text" th:text="${courier.courierStatus}"></td>
+                                                <td class="table-text">
+                                                    <div class="d-flex">
+                                                        <a th:href="@{seeParticular/{id}(id=${courier.id})}" class="px-2"><span><i class="ri-eye-line green"
+                                                                    style="font-size: 16px;"></i></span></a>
+                                                        <a 
+                                                        onclick="return confirm('Are you sure you want to delete this item?');"
+                                                        th:href="@{deleteParticular/{id}(id = ${courier.id})}" 
+                                                        class="px-2"><span><i
+                                                                    class="ri-delete-bin-2-fill red"
+                                                                    style="font-size: 16px;"></i></span></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                            
+                                            <!-- <tr>
+                                                <td class="table-text">2</td>
+                                                <td class="table-text">2023-09-22 16:20:00.0</td>
+                                                <td class="table-text"> 2023-09-26 16:30:00.0</td>
+                                                <td class="table-text">Jaat Ram</td>
+                                                <td class="table-text">9992681528</td>
+                                                <td class="table-text">RF2559100012</td>
+                                                <td class="table-text">Booked</td>
+                                                <td class="table-text">
+                                                    <div class="d-flex">
+                                                        <a href="#" class="px-2"><span><i class="ri-eye-line green"
+                                                                    style="font-size: 16px;"></i></span></a>
+                                                        <a href="#" class="px-2"><span><i
+                                                                    class="ri-delete-bin-2-fill red"
+                                                                    style="font-size: 16px;"></i></span></a>
+                                                    </div>
+                                                </td>
+                                            </tr> -->
+                                            
+                                            
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+                </div>
+                
+                
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <!-- Custom Js Files  -->
+    <script th:src="@{/js/custom.js}"></script>
+
+
+    <!-- Go Back Button JS -->
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const switchBtns = document.querySelectorAll('.switch-btn');
+
+            switchBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+
+                    // Remove switch-active class from all buttons
+                    switchBtns.forEach(btn => {
+                        btn.classList.remove('switch-active');
+                    });
+
+                    // Add switch-active class to the clicked button
+                    this.classList.add('switch-active');
+
+                    // Hide all search boxes
+                    const searchBoxes = document.querySelectorAll('.search-box');
+                    searchBoxes.forEach(box => {
+                        box.style.display = 'none';
+                    });
+
+                    // Determine which search box to display based on the clicked button
+                    const targetId = this.dataset.target;
+
+                    const targetSearchBox = document.getElementById(targetId);
+
+                    if (targetSearchBox) {
+                        targetSearchBox.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

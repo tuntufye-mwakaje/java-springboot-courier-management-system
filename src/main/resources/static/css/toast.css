@@ -1,0 +1,15 @@
+.toast {
+  position: fixed;
+  bottom: 15px; 
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  opacity: 0;
+}
+
+.toast.show {
+  opacity: 2;
+}

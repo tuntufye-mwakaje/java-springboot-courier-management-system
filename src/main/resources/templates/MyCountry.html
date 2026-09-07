@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<title>Country</title>
+</head>
+<body style="background-color: gray;">
+	<div class="row" style="margin-top: 30px;">
+		<!-- Form Column -->
+		<div class="col-md-12">
+
+			<div class="col-md-6">
+				<div class="panel">
+					<div class="panel-heading">
+						<div class="panel-title"><b>Country</b></div>
+						<div style="padding-top: 30px" class="panel-body">
+						
+							<form th:action="@{saveCountry(id=${country.id})}" th:object="${country}"  method="post">
+								<div style="margin-bottom: 25px" class="input-group">
+								<!-- <input type="hidden" th:field="*{id}"> -->
+									<label> Country Name</label> 
+									<input id="countrycode" th:field="*{countryName}" type="text" class="form-control"
+										name="countrycode"> <br>
+										
+										<span class="text-danger" th:if="${#fields.errors('countryName')}"
+											th:errors="*{countryName}" th:errorClass="error">Field
+											ERROR: </span>
+									
+								</div>
+								
+								<div style="margin-top: 10px" class="form-group">
+									<div class="col-sm-12 controls">
+										<button type="reset" class="btn btn-reset">Cancel</button>
+										<button type="submit" class="btn btn-primary">Save</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<table class="table">
+						
+							<thead>
+								<tr>
+									<th scope="col">Id</th>
+									<th scope="col">CountryName</th>
+									<th scope="col">Action</th>
+									
+								</tr>
+							</thead>
+							
+							
+							<tbody>
+ 								<tr th:each="i:${countryList}">
+									<td th:text="${i.id}"></td>
+									<td th:text="${i.countryName}"></td>
+									<td>
+									
+									<a th:href="@{update(id=${i.id})}"
+										class="btn btn-success">Update</a> <a
+										th:href="@{delete(id=${i.id})}" class="btn btn-danger">Delete</a>
+									</td>
+								</tr> 
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+
+				

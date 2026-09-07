@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickDispatch</title>
+<link th:href="@{/css/style.css}" rel="stylesheet">
+<link th:href="@{/css/toast.css}" rel="stylesheet">
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+	integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Remix Icon CDN -->
+<link
+	href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+	rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+
+<script type="text/javascript">
+	function getStatesByCountryId(id, fieldId) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				document.getElementById(fieldId).innerHTML = this.responseText;
+			}
+
+		};
+
+		xhttp.open("GET", "../address/getValuesById?id=" + id
+				+ "&action=getStates", true);
+		xhttp.send();
+
+	}
+	
+	
+	function getDistrictsByStateId(id, fieldId){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				document.getElementById(fieldId).innerHTML = this.responseText;
+			}
+
+		};
+
+		xhttp.open("GET", "../address/getValuesById?id=" + id
+				+ "&action=getDistricts", true);
+		xhttp.send();
+	}
+</script>
+
+
+
+</head>
+
+
+
+<body>
+
+
+	<main class="d-flex">
+		<!-- Sidebar -->
+		<div th:replace="~{Layout/Fragments/header.html :: header}"></div>
+		<!-- Sidebar Ended Here  -->
+
+		<div class="main-content  p-0 ">
+		
+			<!-- TopBar -->
+			<div th:replace="~{Layout/Fragments/header.html :: topbar}"></div>
+			<!-- /TopBar -->
+
+
+		<!-- Message -->
+		
+			<!-- Positive Message -->
+			<div th:if="${positiveMessage}">
+				<div th:replace="~{Layout/Fragments/message.html :: positiveMessage}"></div>
+			</div>
+			
+			<!-- Negative Message -->
+			<div th:if="${negativeMessage}">
+				<div th:replace="~{Layout/Fragments/message.html :: negativeMessage}"></div>	
+			</div>
+
+		<!-- /Message -->
+			
+			
+
+			<!-- Main Page Data  -->
+			<div class="container-fluid px-3 p-0 pb-5">
+				<div
+					class="d-flex flex-wrap gap-2 page-header justify-content-between align-items-center">
+					
+					<h3 class="page-heading page-dir">
+                      Courier &#x276F; Booking &#x276F; New Courier Form
+                    </h3>
+					<p class="header-date m-0 " id="current-date"></p>
+				</div>
+
+				
+
+				<!-- Main Data Container -->
+
+
+
+
+
+				<div class="data-container p-4 bg-primary-subtle">
+					<div class="row justify-content-center">
+						<div class="col-md-11 ">
+							<div class="head fs-18 mb-4">Please Fill Details </div>
+							
+							<!-- Form Starts Here  -->
+							
+							<form th:action="@{saveNewCourier}" th:object="${courier}"
+								method="post" id="myForm">
+								
+								<input
+										th:field="*{id}"
+										type="text"
+										class="form-control org-form-input add-org-form-input"
+										placeholder="Search Using Mobile No. or Name" hidden="true" />
+
+								<!-- 1ST  ROW (Client) -->
+
+								<div class="row  pb-3 differ">
+									<div class="col-md-12">
+										<div class="head py-3 ">
+											Client <sub class="ms-1">Detail(s)</sub>
+										</div>
+									</div>
+									<hr>
+
+									<!-- row 1 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">*Booking Date</label> 
+											<input
+												id="bookingDate"
+												type="date" th:field="*{date}"
+												class="form-control org-form-input add-org-form-input" readonly="readonly" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Save Receiver? </label> 
+											<select
+												name="saveReceiver"
+												class="form-select org-form-input add-org-form-input">
+												<option value="true" th:selected="${saveReceiver == 'true'}">Yes</option>
+												<option value="false" th:selected="${saveReceiver == 'false'}">No</option>
+											</select>
+											
+											<!-- 	<span th:if="${#fields.errors('ownerName')}"
+													th:errors="*{ownerName}" th:errorClass="error-message">Field
+														ERROR</span> -->
+
+										</div>
+									</div>
+									<!-- row 1 ends -->
+
+									<!-- row 2 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Search Client</label> <input
+												type="text"
+												class="form-control org-form-input add-org-form-input"
+												placeholder="Search Using Mobile No. or Name" />
+											<!-- <span th:if="${#fields.errors('branchName')}"
+													th:errors="*{branchName}" th:errorClass="error-message">Field
+														ERROR</span> -->
+
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Search Receiver</label> <input
+												type="text"
+												class="form-control org-form-input add-org-form-input"
+												placeholder="Search Using Mobile No. or Name" />
+											<!-- <span th:if="${#fields.errors('branchName')}"
+													th:errors="*{branchName}" th:errorClass="error-message">Field
+														ERROR</span> -->
+
+										</div>
+									</div>
+									<!-- row 2 ends -->
+
+								</div>
+
+
+
+
+
+
+								<!-- 2ND  ROW (Sender - Receiver)-->
+								<div class="row gx-5">
+
+									<!-- Sender ROW-->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<div class="row  pb-3 differ mt-5 bg-primary-subtle ">
+												<div class="col-md-6">
+													<div class="head py-3 ">
+														Sender/Consignor<sub class="ms-1">Detail(s)</sub>
+													</div>
+												</div>
+												<hr>
+
+												<div class="p-4">
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Name</label> <input
+															type="text" th:field="*{senderName}"
+															class="form-control org-form-input add-org-form-input" />
+														<span th:if="${#fields.errors('senderName')}"
+													th:errors="*{senderName}" th:errorClass="error-message">Field
+														ERROR</span>
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Mobile No.</label> <input
+															type="text" th:field="*{senderPhone}"
+															class="form-control org-form-input add-org-form-input" />
+														<span th:if="${#fields.errors('senderPhone')}"
+													th:errors="*{senderPhone}" th:errorClass="error-message">Field
+														ERROR</span>
+
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Email </label> <input
+															type="text" th:field="*{senderEmailId}"
+															class="form-control org-form-input add-org-form-input" />
+														
+													<span th:if="${#fields.errors('senderEmailId')}"
+													th:errors="*{senderEmailId}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Address Line 1
+														</label> <input type="text" th:field="*{senderAddressLine1}"
+															class="form-control org-form-input add-org-form-input" />
+													
+													<span th:if="${#fields.errors('senderAddressLine1')}"
+													th:errors="*{senderAddressLine1}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+													</div>
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Address Line 2
+														</label> <input type="text" th:field="*{senderAddressLine2}"
+															class="form-control org-form-input add-org-form-input" />
+													
+													<span th:if="${#fields.errors('senderAddressLine1')}"
+													th:errors="*{senderAddressLine1}" th:errorClass="error-message">Field
+														ERROR</span>
+														
+														<!-- <span th:if="${#fields.errors('annualRevenue')}"
+													th:errors="*{annualRevenue}" th:errorClass="error-message">Field
+														ERROR</span> -->
+
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Country</label> 
+														
+														<select th:field="*{senderDistrict.state.country.id}"
+															th:onChange="getStatesByCountryId(this.value,'senderStates');"
+															class="form-select org-form-input add-org-form-input">
+															<option value="">Select Country</option>
+															<option th:each="i : ${countryList}" th:value="${i.id}"
+																th:text="${i.countryName}">India</option>
+														</select>
+														<!-- <span th:if="${#fields.errors('ownershipType')}"
+													th:errors="*{ownershipType}" th:errorClass="error-message">Field
+														ERROR</span> -->
+													</div>
+
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*State</label> 
+														
+														<select
+															th:field="*{senderDistrict.state.id}"
+															id="senderStates"
+															th:onChange="getDistrictsByStateId(this.value,'senderDistrict.id');"
+															class="form-select org-form-input add-org-form-input">
+															<option value="">Select Country First</option>
+															<option th:each="i : ${stateList}" th:value="${i.id}"
+																th:text="${i.stateName}">India</option>
+															
+														</select>
+
+														<!-- <span th:if="${#fields.errors('gstApplicable')}"
+													th:errors="*{gstApplicable}" th:errorClass="error-message">Field
+														ERROR</span>
+ -->
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*District</label> 
+														
+														<select th:field="*{senderDistrict.id}"
+															class="form-select org-form-input add-org-form-input">
+															<option value="">Select State First</option>
+															<option th:each="i : ${districtList}" th:value="${i.id}"
+																th:text="${i.districtName}">India</option>
+															
+														</select>
+
+													<span
+														 th:if="${#fields.errors('senderDistrict.id')}"
+														 th:errors="*{senderDistrict.id}" th:errorClass="error-message">
+														 Field ERROR</span>
+														
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*City/Town</label> <input
+															type="text" th:field="*{senderCity}"
+															class="form-control org-form-input add-org-form-input" />
+
+														<span th:if="${#fields.errors('senderCity')}"
+													th:errors="*{senderCity}" th:errorClass="error-message">Field
+														ERROR</span>
+														
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2">*Pincode/Zipcode</label>
+														<input type="text" th:field="*{senderPincode}"
+															class="form-control org-form-input add-org-form-input" />
+
+														<span th:if="${#fields.errors('senderPincode')}"
+													th:errors="*{senderPincode}" th:errorClass="error-message">Field
+														ERROR</span>
+														
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Landmark</label> <input
+															type="text" th:field="*{senderLandmark}"
+															class="form-control org-form-input add-org-form-input" />
+
+														<!-- <span th:if="${#fields.errors('gstApplicable')}"
+													th:errors="*{gstApplicable}" th:errorClass="error-message">Field
+														ERROR</span>
+ -->
+													</div>
+
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Receiver -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<div class="row  pb-3 differ mt-5 bg-primary-subtle ">
+												<div class="col-md-6">
+													<div class="head py-3 ">
+														Receiver/Consignee<sub class="ms-1">Detail(s)</sub>
+													</div>
+												</div>
+												<hr>
+
+												<div class="p-4">
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Name</label> <input
+															type="text" th:field="*{receiverName}"
+															class="form-control org-form-input add-org-form-input" /> 
+															
+															<span th:if="${#fields.errors('receiverName')}"
+															th:errors="*{receiverName}" th:errorClass="error-message">Field
+															ERROR</span>
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Mob No. </label> <input
+															type="text" th:field="*{receiverPhone}"
+															class="form-control org-form-input add-org-form-input" />
+														
+														<span th:if="${#fields.errors('receiverPhone')}"
+													th:errors="*{receiverPhone}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Email </label> <input
+															type="text" th:field="*{receiverEmailId}"
+															class="form-control org-form-input add-org-form-input" />
+														<span th:if="${#fields.errors('receiverEmailId')}"
+													th:errors="*{receiverEmailId}" th:errorClass="error-message">Field
+														ERROR</span>
+
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Address Line 1
+														</label> <input type="text" th:field="*{receiverAddressLine1}"
+															class="form-control org-form-input add-org-form-input" />
+														 <span th:if="${#fields.errors('receiverAddressLine1')}"
+													th:errors="*{receiverAddressLine1}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+													</div>
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Address Line 2
+														</label> <input type="text" th:field="*{receiverAddressLine2}"
+															class="form-control org-form-input add-org-form-input" />
+															
+														<!-- <span th:if="${#fields.errors('annualRevenue')}"
+													th:errors="*{annualRevenue}" th:errorClass="error-message">Field
+														ERROR</span> -->
+
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Country</label>
+														
+														<select
+															th:field="*{receiverDistrict.state.country.id}"
+															th:onChange="getStatesByCountryId(this.value,'receiverStates');"
+															class="form-select org-form-input add-org-form-input">
+															<option value="">Select Country</option>
+															<option th:each="i : ${countryList}" th:value="${i.id}"
+																th:text="${i.countryName}">India</option>
+														</select>
+
+														<!-- <span th:if="${#fields.errors('ownershipType')}"
+													th:errors="*{ownershipType}" th:errorClass="error-message">Field
+														ERROR</span> -->
+													</div>
+
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*State</label> 
+														
+														<select 
+															th:field="*{receiverDistrict.state.id}"
+															id="receiverStates"
+															th:onChange="getDistrictsByStateId(this.value,'receiverDistrict.id');"
+															class="form-select org-form-input add-org-form-input">
+															<option value="">Select Country First</option>
+															<option th:each="i : ${stateList1}" th:value="${i.id}"
+																th:text="${i.stateName}">India</option>
+														</select>
+
+														<!-- <span th:if="${#fields.errors('gstApplicable')}"
+													th:errors="*{gstApplicable}" th:errorClass="error-message">Field
+														ERROR</span>
+ -->
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*District</label> 
+														
+														<select th:field="*{receiverDistrict.id}"
+															class="form-select org-form-input add-org-form-input">
+															<option value="">Select State First</option>
+															<option th:each="i : ${districtList1}" th:value="${i.id}"
+																th:text="${i.districtName}">India</option>
+														</select>
+
+													 <span 
+													 	th:if="${#fields.errors('receiverDistrict.id')}"
+														th:errors="*{receiverDistrict.id}" th:errorClass="error-message">
+														Field ERROR</span>
+														
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*City/Town</label> <input
+															type="text" th:field="*{receiverCity}"
+															class="form-control org-form-input add-org-form-input" />
+
+														<!-- <span th:if="${#fields.errors('gstApplicable')}"
+													th:errors="*{gstApplicable}" th:errorClass="error-message">Field
+														ERROR</span>
+ -->
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">*Pincode/Zipcode</label>
+														<input type="text" th:field="*{receiverPincode}"
+															class="form-control org-form-input add-org-form-input" /> 
+															
+															<span th:if="${#fields.errors('receiverPincode')}"
+															th:errors="*{receiverPincode}"
+															th:errorClass="error-message">Field ERROR</span>
+													</div>
+
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Landmark</label> <input
+															type="text" th:field="*{receiverLandmark}"
+															class="form-control org-form-input add-org-form-input" />
+
+														<!-- <span th:if="${#fields.errors('gstApplicable')}"
+													th:errors="*{gstApplicable}" th:errorClass="error-message">Field
+														ERROR</span>
+ -->
+													</div>
+
+
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+
+								</div>
+
+
+
+
+
+
+								<!-- 3RD ROW (Change Units) -->
+
+								<div class="row  pb-3 differ mt-5 ">
+									<div class="col-md-12">
+										<div class="head py-3 ">
+											Change Units(s) <sub class="ms-1">if desired</sub>
+										</div>
+									</div>
+									<hr>
+
+									<!-- row 1 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Weight Unit</label> 
+											<select
+												id="courier_weight_unit"
+												th:field="*{weightUnit}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="gm-gram">gm-gram</option>
+												<option value="kg-kilogram">kg-kilogram</option>
+												<option value="mg-milligram">mg-milligram</option>
+												<option value="lb-pound">lb-pound</option>
+												<option value="t-metric ton">t-metric ton</option>
+											</select>
+											
+											 <span th:if="${#fields.errors('weightUnit')}"
+												th:errors="*{weightUnit}" th:errorClass="error-message">Field
+												ERROR</span>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Length Unit</label> <select
+												th:field="*{lengthUnit}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="cm">cm-centimeter</option>
+												<option value="mm">mm-milimeter</option>
+											</select>
+											
+												<span th:if="${#fields.errors('lengthUnit')}"
+													th:errors="*{lengthUnit}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+										</div>
+									</div>
+									<!-- row 1 ends -->
+
+									<!-- row 2 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Volume Unit</label> <select
+												th:field="*{volumeUnit}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="l">l-litre</option>
+												<option value="ml">mL-milliliter</option>
+											</select>
+											
+											<span th:if="${#fields.errors('volumeUnit')}"
+													th:errors="*{volumeUnit}" th:errorClass="error-message">Field
+														ERROR</span>
+
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Distance Unit</label> <select
+												th:field="*{distanceUnit}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="km">km-kilometre</option>
+												<option value="m">m-metre</option>
+											</select>
+											<span th:if="${#fields.errors('volumeUnit')}"
+													th:errors="*{volumeUnit}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+										</div>
+									</div>
+									<!-- row 2 ends -->
+
+								</div>
+
+
+
+								<!-- 4TH ROW (Change Units) -->
+
+								<div class="row  pb-3 differ mt-5 ">
+									<div class="col-md-12">
+										<div class="head py-3 ">
+											Shipment <sub class="ms-1">Detail(s)</sub>
+										</div>
+									</div>
+									<hr>
+
+									<!-- row 1 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Courier Mode</label> <select
+												th:field="*{courierMode}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="byRoad">By Road</option>
+												<option value="bySea">By Sea</option>
+												<option value="byAir">By Air</option>
+											</select>
+											 <span th:if="${#fields.errors('courierMode')}"
+													th:errors="*{courierMode}" th:errorClass="error-message">Field
+														ERROR</span> 
+										</div>
+									</div>
+
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">eWay Bill No.</label> <input
+												type="text" th:field="*{ewayBillNo}"
+												class="form-control org-form-input add-org-form-input" />
+										<span th:if="${#fields.errors('ewayBillNo')}"
+													th:errors="*{ewayBillNo}" th:errorClass="error-message">Field
+														ERROR</span> 
+										</div>
+									</div>
+
+									<!-- row 1 ends -->
+
+									<!-- row 2 start -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Consignment Type</label>
+											<select th:field="*{consignmentType}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="perishableGoods">Perishable Goods</option>
+												<option value="generalCargo">General Cargo</option>
+											</select>
+											<span th:if="${#fields.errors('consignmentType')}"
+													th:errors="*{consignmentType}" th:errorClass="error-message">Field
+														ERROR</span>
+										</div>
+									</div>
+
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">No. Of Piece(s)</label> <input
+												type="text" th:field="*{noOfPieces}"
+												class="form-control org-form-input add-org-form-input" />
+										
+										<span th:if="${#fields.errors('noOfPieces')}"
+													th:errors="*{noOfPieces}" th:errorClass="error-message">Field
+														ERROR</span> 
+										</div>
+									</div>
+
+									<!-- row 2 End -->
+
+
+									<!-- row 3 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Hazardous
+												Material</label> 
+											<select 
+												id="hazardousMaterial"
+												th:field="*{hazardious}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="">Select The Material Is Hazardous or Not</option>
+												<option value="true">Yes</option>
+												<option value="false">No</option>
+											</select>
+											<span th:if="${#fields.errors('hazardious')}"
+													th:errors="*{hazardious}" th:errorClass="error-message">Field
+														ERROR</span>
+
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Explain</label> 
+											<input id="explanation"
+												type="text" th:field="*{explanation}"
+												class="form-control org-form-input add-org-form-input"
+												placeholder="Laptop, Battery, etc." />
+
+											<!-- <span th:if="${#fields.errors('explaination')}"
+													th:errors="*{explaination}" th:errorClass="error-message">Field
+														ERROR</span>  -->
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Courier Center</label> <select
+												th:field="*{courierCenter}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="">Select Your Courier Center</option>
+												<option value="kolkata">Uk Couriers</option>
+												<option value="kolkata">RJ Ships</option>
+												<option value="kolkata">Kolkata ships</option>
+												<option value="kolkata">MadhyaPradeshCourier services</option>
+												<option value="kolkata">Gujrat couriers</option>
+										
+
+											</select>
+
+											 <span th:if="${#fields.errors('courierCenter')}"
+													th:errors="*{courierCenter}" th:errorClass="error-message">Field
+														ERROR</span> 
+										</div>
+									</div>
+
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Distance</label> <input
+												type="text" th:field="*{distance}"
+												class="form-control org-form-input add-org-form-input" />
+
+											 <span th:if="${#fields.errors('distance')}"
+													th:errors="*{distance}" th:errorClass="error-message">Field
+														ERROR</span>
+										</div>
+									</div>
+									<!-- row 3 ends -->
+
+									<!-- row 4 start -->
+									<div class="col-md-12 mb-3">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Consignment
+												Description</label>
+
+											<textarea class="form-control org-form-input"
+												th:field="*{description}"
+												placeholder="Leave a description here" id="floatingTextarea"></textarea>
+
+											<!-- <span th:if="${#fields.errors('branchName')}"
+													th:errors="*{branchName}" th:errorClass="error-message">Field
+														ERROR</span> -->
+										</div>
+									</div>
+
+									<!-- row 4 End -->
+
+									<hr>
+
+
+
+								
+									 
+									 <!-- New Code ->Table -->
+									 <div class="col-md-12">
+										<div class="mb-3"> <!-- th:name="${dontUseWeights}" -->
+											<input 
+												th:checked="${dontUseWeights}"
+												name="dontUseWeights" type="checkbox"  id="use-weight" class="use-weight">
+											<label for="use-weight" style="font-size: 12px;">Don't
+												use Weight(s)</label>
+										</div>
+
+										<div class="" id="Weight-table-div">
+											<table
+												class="table align-middle table-responsive table-bordered border">
+												<thead class="bg-gray border table-secondary">
+													<tr>
+														<th class="py-2 text-nowrap">Sr. No.</th>
+														<th class="py-2">Length</th>
+														<th class="py-2">Width</th>
+														<th class="py-2">Height</th>
+														<th class="py-2">Volumetric Weight</th>
+														<th class="py-2">Weight</th>
+														<th class="py-2">Fragile</th>
+													</tr>
+												</thead>
+												<tbody id="tableBody" class="border">
+												
+													<tr id="table-row"
+														th:each="i, cStatus : *{courierItems}">
+
+														<td>
+															<div class="text" id="table-serial-no">1</div>
+														</td>
+														<td>
+															<input type="text"
+																class="form-control org-form-input"
+																th:field="*{courierItems[__${cStatus.index}__].length}"
+																id="length-1"
+																th:onChange="calculateAllWeight();"
+																th:onkeypress="return onlyNos(event,this);"
+																/>
+															
+															<span th:if="${#fields.errors('courierItems[__${cStatus.index}__].length')}"
+															th:errors="*{courierItems[__${cStatus.index}__].length}" th:errorClass="error-message">Field
+																ERROR</span>
+																
+															
+														</td>
+														
+														<td>
+															<input type="text"
+																class="form-control org-form-input"
+																th:field="*{courierItems[__${cStatus.index}__].width}" 
+																id="width-1"
+																th:onChange="calculateAllWeight();"
+																th:onkeypress="return onlyNos(event,this);"
+																/>
+															
+															<span th:if="${#fields.errors('courierItems[__${cStatus.index}__].width')}"
+															th:errors="*{courierItems[__${cStatus.index}__].width}" th:errorClass="error-message">Field
+																ERROR</span>
+															
+															</td>
+														<td class="text">
+															<input type="text"
+																class="form-control org-form-input"
+																th:field="*{courierItems[__${cStatus.index}__].height}" 
+																id="height-1"
+																th:onChange="calculateAllWeight();"
+																th:onkeypress="return onlyNos(event,this);"
+																/>
+																
+																	<span th:if="${#fields.errors('courierItems[__${cStatus.index}__].height')}"
+																th:errors="*{courierItems[__${cStatus.index}__].height}" th:errorClass="error-message">Field
+																	ERROR</span>
+															
+														</td>
+														<td>
+															<input type="text"
+																class="form-control org-form-input"
+																th:field="*{courierItems[__${cStatus.index}__].volumetricWeight}" 
+																id="volumetricWeight-1"
+																th:onChange="calculateAllWeight();"
+																th:onkeypress="return onlyNos(event,this);"
+																readonly="readonly"
+																/>
+															
+															
+															
+															
+														</td>
+														<td class="text text-nowrap">
+															<input 
+																type="text"
+																class="form-control org-form-input"
+																th:field="*{courierItems[__${cStatus.index}__].weight}" 
+																id="weight-1"
+																th:onChange="calculateAllWeight();"
+																th:onkeypress="return onlyNos(event,this);"
+																/>
+															
+																<span th:if="${#fields.errors('courierItems[__${cStatus.index}__].weight')}"
+															th:errors="*{courierItems[__${cStatus.index}__].weight}" th:errorClass="error-message">Field
+																ERROR</span>
+															
+														</td>
+														
+														<td>
+															<select 
+																id="fragile-1"
+																th:field="*{courierItems[__${cStatus.index}__].fragile}"
+																class="form-select org-form-input add-org-form-input"
+																style="min-width: 70px;">
+																	<option value="true">Yes</option>
+																	<option value="false">No</option>
+															</select>
+														
+															<span th:if="${#fields.errors('courierItems[__${cStatus.index}__].fragile')}"
+															th:errors="*{courierItems[__${cStatus.index}__].fragile}" th:errorClass="error-message">Field
+																ERROR</span>
+														
+														</td>
+														
+													</tr>
+												
+												</tbody>
+											
+											</table>
+										</div>
+									</div>
+									 
+									
+
+									<!-- New Code-> +, - Button -->
+									<div class="col-md-12 Weight-subdiv-hide">
+										<div class="d-flex  justify-content-center align-items-center">
+											<div class="add-column">
+												<p
+													style="background-color: transparent; border: none; cursor: pointer;"
+													id="add-table">
+													<span> <i class="ri-add-circle-line "
+														style="font-size: 28px; color: #198754;"></i>
+													</span>
+												</p>
+											</div>
+
+											<div class="remove-column">
+												<p
+													style="background-color: transparent; border: none; cursor: pointer;"
+													id="remove-table">
+													<span> <i class="ri-close-circle-line text-danger"
+														style="font-size: 28px;"></i>
+													</span>
+												</p>
+											</div>
+										</div>
+									</div>
+
+
+									<!-- UNDER TABLE -->
+
+									<div class="col-md-6 Weight-subdiv-hide">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Total Weight</label> 
+											<input
+												id="total_weight"
+												type="text" th:field="*{totalWeight}"
+												class="form-control org-form-input add-org-form-input" readonly="readonly" />
+												
+											<!-- <span th:if="${#fields.errors('totalWeight')}"
+													th:errors="*{totalWeight}" th:errorClass="error-message">Field
+														ERROR</span>  -->
+										</div>
+									</div>
+
+								<div class="col-md-6 Weight-subdiv-hide">
+										<div class="d-flex flex-column">
+										
+											<div class="d-flex mt-4">
+												<label 
+													class="org-form-label my-2">Total Weight</label> 
+												<label
+													id="LabelContent"
+													class="org-form-label ms-3">(Weight)|(Volumetric Weight)</label>
+											</div>
+											
+											<!-- <span 
+												th:if="${#fields.errors('organizationName')}"
+												th:errors="*{organizationName}" th:errorClass="error-message">
+												Field ERROR</span> -->
+										</div>
+									</div> 
+									
+									<!-- New code-> weight -->
+									
+									<!-- <div class="col-md-6 col-sm-4 Weight-subdiv-hide">
+                                                <div class="row mt-4">
+                                                    <div class="col-md-4">
+                                                        <label for="Coorier-Service"
+                                                            class="org-form-label my-2 ">Total Weight</label>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <input type="text"  id="LabelContent"
+                                                        class="form-control org-form-input add-org-form-input" disabled>
+                                                        <span id="Total-Weight-error" class="error-message"></span>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+									
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Courier Service</label> <select
+												th:field="*{courierService}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="">Select Plan</option>
+												<option value="true">Yes</option>
+												<option value="false">No</option>
+											</select>
+											
+											<span th:if="${#fields.errors('courierService')}"
+													th:errors="*{courierService}" th:errorClass="error-message">Field
+														ERROR</span> 
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Expected Delivery</label>
+											<input type="date" th:field="*{expectedDelivery}"
+												class="form-control org-form-input add-org-form-input">
+											 <span th:if="${#fields.errors('expectedDelivery')}"
+													th:errors="*{expectedDelivery}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+										</div>
+									</div>
+
+
+								</div>
+
+
+								<!-- 5TH ROW (Charges) -->
+
+								<div class="row  pb-3 differ mt-5">
+									<div class="col-md-12">
+										<div class="head py-3 ">
+											Charges <sub class="ms-1">Details(s)</sub>
+										</div>
+									</div>
+									<hr>
+
+									<!-- row 1 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Charges(₹)</label> 
+											<input
+												th:onchange="calculateFinalCharges();"
+												id="charges"
+												type="text" th:field="*{charges}"
+												class="form-control org-form-input add-org-form-input" />
+											
+											<span th:if="${#fields.errors('charges')}"
+													th:errors="*{charges}" th:errorClass="error-message">Field
+														ERROR</span> 
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Final Charges(₹)</label>
+											<input
+												id="finalCharges"
+												type="text" th:field="*{finalCharges}"
+												class="form-control org-form-input add-org-form-input" readonly/>
+										
+										<span th:if="${#fields.errors('finalCharges')}"
+													th:errors="*{finalCharges}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+										</div>
+									</div>
+									<!-- row 1 ends -->
+
+									<!-- row 2 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Tax</label> 
+											<select
+												th:onchange="checkTaxType();"
+												th:field="*{taxType}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="">Select Tax</option>
+												<option value="GST">GST</option>
+												<option value="No">No</option>
+											</select>
+											 <span th:if="${#fields.errors('taxType')}"
+													th:errors="*{taxType}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Tax %</label> 
+											<select
+												th:onchange="calculateTax();"
+												id="taxPercentage"
+												th:field="*{taxPercentage}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="">Select Tax %</option>
+												<option value="7">7%</option>
+												<option value="5">5%</option>
+											</select>
+											
+											<span th:if="${#fields.errors('taxPercentage')}"
+													th:errors="*{taxPercentage}" th:errorClass="error-message">Field
+														ERROR</span> 
+
+										</div>
+									</div>
+									<!-- row 2 ends -->
+
+									<!-- row 3 -->
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2 ">Discount Type</label> 
+											<select
+												th:onchange="calculateDiscount();"
+												th:field="*{discountType}"
+												class="form-select org-form-input add-org-form-input">
+												<option value="">Select Discount Type(%)</option>
+												<option value="percentage">Percentage(%)</option>
+												<option value="amount">Amount</option>
+											</select>
+											<span th:if="${#fields.errors('discountType')}"
+													th:errors="*{discountType}" th:errorClass="error-message">Field
+														ERROR</span>
+
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="d-flex flex-column">
+											<label class="org-form-label my-2">Discount</label> 
+											<input
+												th:oninput="calculateDiscount();"
+												th:field="*{discount}"
+												type="text"
+												class="form-control org-form-input add-org-form-input" />
+											
+											<span th:if="${#fields.errors('discount')}"
+													th:errors="*{discount}" th:errorClass="error-message">Field
+														ERROR</span>
+
+										</div>
+									</div>
+									<!-- row 3 ends -->
+
+								</div>
+
+
+
+
+								<div class="row my-4 gap-3">
+									<div class="col-md-12">
+
+										<div class="d-flex justify-content-center">
+
+											<div class="col-md-2 me-5">
+												<button type="reset" class="btn btn-outline-danger"
+													style="width: 100%;" th:onclick="confirmReset()">Reset</button>
+											</div>
+
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-success"
+													style="width: 100%;">Book Courier</button>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</form>
+							<!-- Form Ends Here -->
+							
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+	</main>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+		integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+		crossorigin="anonymous"></script>
+	<!-- Custom Js Files  -->
+	<script th:src="@{/js/custom.js}"></script>
+
+
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+
+
+	
+<!-- Calculate FinalCharges -->
+	<script>
+	
+		const originalTaxPercentageField = document.getElementById("taxPercentage").innerHTML;
+		
+		var haveTaxType = false;
+		function checkTaxType(){
+			
+			const taxPercentage = document.getElementById("taxPercentage");
+			const taxType = document.getElementById("taxType");
+			
+			if(taxType.value === 'No'){
+				taxPercentage.innerHTML='<option value="">Ignore this Field</option>';
+				document.getElementById("finalCharges").value='';
+				taxPercentage.disabled = true;
+				haveTaxType = false;
+			}else{
+				taxPercentage.disabled = false;
+				taxPercentage.innerHTML= originalTaxPercentageField;
+				if(taxType.value === ''){
+					haveTaxType = false;
+				}else{
+					haveTaxType = true;
+				}
+			}
+				calculateFinalCharges();
+			
+			//console.log("taxPercentage: "+ originalTaxPercentage);
+		}
+		
+		
+		function calculateTax(){
+			
+			
+			 if(taxType.value === ''){
+				event.preventDefault();
+				alert("Please Select Tax Type First !");
+				taxPercentage.value='';
+				return;
+			}
+			
+			 calculateFinalCharges();	
+		}
+		
+		var haveDiscountType = false;
+		
+		function calculateDiscount(){
+			const disCountTypeField = document.getElementById("discountType");
+			if(disCountTypeField.value === ''){
+				haveDiscountType = false;
+				document.getElementById("discount").value = '';
+				alert("Please Select Discount Type First !")
+			}else{
+				haveDiscountType = true;
+			}
+			
+			calculateFinalCharges();
+		}
+		
+		
+		function calculateFinalCharges(){
+			//alert("called!!!")
+		
+			const taxPercentage = document.getElementById("taxPercentage");
+			const chargesField = document.getElementById("charges");
+			const chargesValue = parseFloat(chargesField.value);
+			const finalCharges = document.getElementById("finalCharges");
+			
+			
+			if(isNaN(chargesValue) || chargesValue<=0){
+				alert("Please Enter The Charges !");
+			}
+			
+			var taxPercentageValue = 0.00;
+			var taxAmount = 0.00;
+			var totalCharges = 0.00;
+			var discountAmount = 0.00;
+			
+			var haveTaxPercentage = true;
+			if(taxPercentage.value === ''){
+				haveTaxPercentage = false;
+			}
+			
+			if(haveTaxType && haveTaxPercentage){
+				//console.log("In haveTaxType");
+				
+				taxPercentageValue = parseFloat(taxPercentage.value);
+				taxAmount = (taxPercentageValue/100)*chargesValue;
+				
+				totalCharges = chargesValue+taxAmount;
+				
+				
+				if(!isNaN(totalCharges)){
+					finalCharges.value = totalCharges.toFixed(2);
+				}
+			}
+			
+			
+			
+			if(haveDiscountType){
+				//console.log("In haveDiscountType");
+				var finalChargesValue = 0.00;
+				const disCountTypeField = document.getElementById("discountType");
+				const discountValue =  parseFloat(document.getElementById("discount").value);
+				
+				finalChargesValue = parseFloat(finalCharges.value);
+				
+				if(isNaN(finalChargesValue)){
+					finalChargesValue = 0.00;
+				}
+				
+				//console.log("finalChargesValue: "+ finalChargesValue);
+				
+				
+				
+				//amount, percentage
+				if(disCountTypeField.value.toLowerCase() === 'percentage'){
+					
+					discountAmount = (discountValue/100)*chargesValue;
+					//console.log("In percentage");
+					//console.log("discountAmount: "+ discountAmount);
+					
+				}else{
+					discountAmount = discountValue;
+					//console.log("In Amount");
+					//console.log("discountValue: "+ discountValue);
+					//console.log("discountAmount: "+ discountAmount);
+				}
+				
+				totalCharges = finalChargesValue - discountAmount;
+				
+				if(finalChargesValue<=0){
+					totalCharges = chargesValue-discountAmount;
+				}
+				//console.log("totalCharges: "+totalCharges)
+								
+				if(!isNaN(totalCharges) && totalCharges > 0.00 ){
+				//console.log("totalCharges: "+totalCharges)
+					finalCharges.value = totalCharges.toFixed(2);
+				}
+			}
+				
+		}
+		
+	</script>
+
+
+
+	<script>
+	
+		function confirmReset() {
+			// Display a confirmation dialog
+			var confirmReset = confirm("Are you sure you want to reset your form data?");
+			// If user confirms, reset the form
+			if (confirmReset) {
+				document.getElementById("myForm").reset(); // Replace "myForm" with the ID of your form
+			}
+
+			if (!confirmReset) {
+				event.preventDefault(); // Prevent the default reset behavior
+			}
+		}
+		
+	</script>
+	
+	
+	<!-- Script for Toggle weight-subdiv based on weight Checkbox -->
+<script>
+    $(document).ready(function() {
+    	
+    	//for the intially checking
+    	if($('#use-weight').prop('checked')){
+    		$('.Weight-subdiv-hide').hide();
+            $('#Weight-table-div').hide();
+    	}
+    	
+    	
+        $('#use-weight').change(function() {
+            if (this.checked) {
+                $('.Weight-subdiv-hide').hide();
+                $('#Weight-table-div').hide();
+            } else {
+                $('.Weight-subdiv-hide').show();
+                $('#Weight-table-div').show();
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    $(document).ready(function() {
+       var maxRange=3;
+
+        $('#add-table').click(function() {
+        	var tableBody = $('#tableBody');
+            var index = tableBody.children().length;
+            if(index < maxRange){
+            	
+	            console.log("tableBody : ", tableBody);
+	            console.log("index: ", index);
+	            // th:onChange="calculateAllWeight();"
+				   var operation = 'onChange="calculateAllWeight();" onkeypress="return onlyNos(event,this);"';
+	            var newRowHTML = '<tr id="table-row'+ index +'">' +
+	                '<td><div class="text" id="table-serial-no">' + (index + 1) + '</div></td>' +
+	                '<td><input type="text" class="form-control org-form-input" name="courierItems[' + index + '].length" id="length-'+ (index+1) +'" onChange="calculateAllWeight();" onkeypress="return onlyNos(event,this);" /></td>' +
+	                '<td><input type="text" class="form-control org-form-input" name="courierItems[' + index + '].width" id="width-'+ (index+1) +'" onChange="calculateAllWeight();" onkeypress="return onlyNos(event,this);" /></td>' +
+	                '<td><input type="text" class="form-control org-form-input" name="courierItems[' + index + '].height" id="height-'+ (index+1) +'" onChange="calculateAllWeight();" onkeypress="return onlyNos(event,this);" /></td>' +
+	                '<td><input type="text" class="form-control org-form-input" name="courierItems[' + index + '].volumetricWeight" id="volumetricWeight-'+ (index+1) +'" readonly /></td>' +
+	                '<td><input type="text" class="form-control org-form-input" name="courierItems[' + index + '].weight" id="weight-'+ (index+1) +'" onChange="calculateAllWeight();" onkeypress="return onlyNos(event,this);"/></td>' +
+	                
+	                '<td><select name="courierItems[' + index + '].fragile" id="fragile-'+ (index+1) +'" class="form-select org-form-input add-org-form-input" style="min-width: 70px;">' +
+	                '<option value="true">Yes</option>' +
+	                '<option value="false">No</option>' +
+	                '</select></td>' +
+	                
+	                '</tr>';
+	            tableBody.append(newRowHTML);
+            
+            // explain
+        	}else if(index >= maxRange){ 
+	            //alert("Warning ! you can't added more than 3")
+	            var toast = $('<div class="toast bg-danger">You can not added more than '+ maxRange +' !</div>');
+			     $('body').append(toast);
+			     setTimeout(function() {
+			       toast.addClass('show');
+			       setTimeout(function() {
+			         toast.removeClass('show');
+			         setTimeout(function() {
+			           toast.remove();
+			         }, 5000);
+			       }, 5000);
+			     }, 100);
+	        }
+        });
+
+        $('#remove-table').click(function() {
+        	
+        	 var tableBody = $('#tableBody');
+        	 
+        	    if (tableBody.children().length > 1) {
+        	        tableBody.children().last().remove();
+        	    }else{
+        	    	var toast = $('<div class="toast bg-danger">Warning ! No more extra details to remove.</div>');
+				     $('body').append(toast);
+				     setTimeout(function() {
+				      toast.addClass('show');
+				       setTimeout(function() {
+				        toast.removeClass('show');
+				         setTimeout(function() {
+				          toast.remove();
+				         }, 5000);
+				       }, 5000);
+				     }, 100);
+        	    }
+        });
+    });
+</script>
+
+
+<!-- Booking Date -->
+	<script>
+		$(document).ready(function() {
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+			var yyyy = today.getFullYear();
+
+			today = yyyy + '-' + mm + '-' + dd;
+			$('#bookingDate').val(today);
+		});
+	</script>
+
+	<script>
+		$(document).ready(function() {
+			$('#hazardousMaterial').change(function() {
+				if ($(this).val() == 'true') {
+					$('#explanation').prop('disabled', false);
+				} else {
+					$('#explanation').prop('disabled', true);
+					$('#explanation').attr('placeholder', 'Ignore This Field');
+				}
+			});
+		});
+	</script>
+	
+	<script>
+	
+
+	 function calculateAllWeight(){
+		 
+			if(document.getElementById("courier_weight_unit").value.trim()===''){
+				alert('Kindly Choose Weight unit first');
+				return;
+			}
+			
+			
+		var weightSum=0.00;
+		var totalVlm=0.00;
+		
+		
+		var table_rows=document.getElementById("tableBody").rows.length;
+		//alert(table_rows)
+		for(var i=1; i<=table_rows; i++){
+			
+			var volumetricWeight=0.00, height=0.00, width=0.00, length=0.00;
+			
+			
+			height = parseFloat(document.getElementById("height-"+i).value);
+		
+			width = parseFloat(document.getElementById("width-"+i).value);
+			length = parseFloat(document.getElementById("length-"+i).value);
+			
+			// new code
+			var weightUnit=document.getElementById("courier_weight_unit").value;
+			if(weightUnit==="gm-gram"){			
+				volumetricWeight+= ((height*width*length)/5000)*1000; // in gram			
+			}
+			else if(weightUnit==="kg-kilogram"){			
+				volumetricWeight+= ((height*width*length)/5000);	// in kg		
+			}
+			else if(weightUnit==="mg-milligram"){
+				volumetricWeight+= ((height*width*length)/5000)*1000000;	// in mg	
+			}
+			else if(weightUnit==="lb-pound"){
+				volumetricWeight+= ((height*width*length)/5000)*2.20462;	// in pounds	0.001
+			}
+			else if(weightUnit==="t-metric ton"){
+				volumetricWeight+= ((height*width*length)/5000)*0.001;	// in metric tons	
+			}
+			
+			document.getElementById("volumetricWeight-"+i).value=volumetricWeight.toFixed(2);
+			
+			totalVlm+=volumetricWeight;
+			weightSum += parseFloat(document.getElementById("weight-"+i).value);	
+		}
+		
+		
+		console.log("sum: "+ weightSum)
+		console.log("Total Volumetric Weight: "+ totalVlm)
+		
+		document.getElementById("total_weight").value = weightSum > totalVlm ? weightSum.toFixed(2) : totalVlm.toFixed(2);
+		document.getElementById("LabelContent").innerHTML= weightSum.toFixed(2)+" (Weight) | " + totalVlm.toFixed(2)+" (Volumetric Weight)";
+		
+	}
+	
+	</script>
+	
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		setTimeout(() => {
+/* 			$("#msg").css("display", "none"); */
+			$(".msg").fadeOut();
+		}, 3000);
+	});
+	</script>
+	
+	
+	</body>
+	</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Purchase Form</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+	integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+.card {
+	margin-bottom: 20px;
+}
+
+.buttons {
+	margin-left: 588px;
+}
+
+.heading {
+	margin-left: 450px;
+	color: red;
+}
+
+.plusMinus {
+	margin-left: 220px;
+	margin-bottom: 20px;
+}
+</style>
+
+</head>
+<body>
+
+	<form role="form" th:action="@{saveStudent}" th:object="${student}"
+		method="post">
+		
+		
+		<div class="container">
+			<h1 class=" heading mt-4 mb-4">Practice Form</h1>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-body">
+							<h2 class="card-title">Student Details</h2>
+
+							<div class="form-group">
+								<label for="invoiceNumber">Student Name:</label> <input
+									type="text" class="form-control" id="invoiceNumber"
+									th:field="*{name}">
+							</div>
+
+							<div class="form-group">
+								<label for="invoiceDate">Student Roll No:</label> <input
+									type="text" class="form-control" id="invoiceDate"
+									th:field="*{rollNo}">
+							</div>
+
+							
+
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-body">
+							<h2 class="card-title">Subjects</h2>
+							<div id="productsContainer">
+							 <div class="card mb-3" th:each="s, iStat : *{subjects}">
+        						
+									<div class="card-body">
+										<div class="form-group">
+											<label for="productName">Product Name:</label> <input
+												type="text" class="form-control"
+												th:field="*{product[__${iStat.index}__].productName}"
+												name="productName">
+										</div>
+
+										<div class="form-group">
+											<label for="quantity">Quantity:</label> <input type="text"
+												th:field="*{product[__${iStat.index}__].quantity}"
+												class="form-control" name="quantity">
+										</div>
+
+										<div class="form-group">
+											<label for="productDate">Product Date:</label> <input
+												th:field="*{product[__${iStat.index}__].productdate}"
+												type="date" class="form-control" >
+										</div>
+
+										<div class="form-group">
+											<label for="cost">Cost:</label> <input type="text"
+												th:field="*{product[__${iStat.index}__].cost}"
+												class="form-control" name="cost">
+										</div>
+
+										<div class="form-group">
+											<label for="brand">Brand:</label> <input type="text"
+												th:field="*{product[__${iStat.index}__].brand}"
+												class="form-control" name="brand">
+										</div>
+										
+										
+										
+									</div>
+									
+								</div>
+								
+							</div>
+
+						</div>
+						<!-- <div class="form-group" style="text-align: center; margin-right: 130px;margin-left: 130px;">
+							  <label for="brand">Total Price:</label> <input type="text"
+								
+								class="form-control" name="total"id="total">
+						</div>
+						 -->
+						<div class="plusMinus">
+						
+						
+							<a href="javascript:void(0);" id="add" title="Add More Option"><i
+								class="fa fa-plus-circle fa-2x add_button"></i> </a> <a
+								href="javascript:void(0);" id="remove" title="Remove"> <i
+								class="fa fa-minus-circle fa-2x remove_button remove"></i>
+							</a>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="buttons">
+				<button type="submit" class="btn btn-success btn-sm">Submit</button>
+				<button type="reset" class="btn btn-danger btn-sm">Reset</button>
+
+			</div>
+
+		</div>
+	</form>
+
+	<!-- <script type="text/javascript">
+	  $(document).ready(() => {
+
+          var max_field = 10;
+          var wrapper = $("#productsContainer")
+          var add = $("#add");
+          var remove = $("#remove");
+          var x = 1;
+
+          $(add).click((e) => {
+
+                                                if (x < max_field) {
+                                                x++;
+ 												var newField = $(
+ 														'<div class="card mb-3">'
+ 										                +'<div class="card-body">'
+ 										                +'<div class="form-group">'
+ 										                +'<label for="productName">Product Name:</label>'
+ 										                +'<input type="text"  class="form-control"'
+ 										                +'name="product['+x+'].productName">'
+ 										                +'</div>'
+
+ 										                +'<div class="form-group">'
+ 										                +'<label for="quantity">Quantity:</label>'
+ 										                +'<input type="text" class="form-control"'
+ 										                +'name="product['+x+'].quantity">'
+ 										                +'</div>'
+
+ 										                +' <div class="form-group">'
+ 										                +'<label for="productDate">Product Date:</label>'
+ 										                +'<input type="date" class="form-control"'
+ 										                +'name="product['+x+'].productdate">'
+ 										                +'</div>'
+
+ 										                +'<div class="form-group">'
+ 										                +'<label for="cost">Cost:</label>'
+ 										                +'<input type="text" class="form-control"'
+ 										                +'name="product['+x+'].cost">'
+ 										                +'</div>'
+
+ 										                +'<div class="form-group">'
+ 										                +'<label for="brand">Brand:</label>'
+ 										                +'<input type="text" class="form-control"'
+ 										                +'name="product['+x+'].brand">'
+ 										                +'</div>'
+ 										                +'</div>'
+ 										                +'</div>');
+ 												
+												$(wrapper).append(newField);
+                                                }
+											});
+
+								          $(remove).click((e) => {
+								              if (x > 1) {
+								                  $(wrapper).children('div:last-child').remove();
+								                  x--
+								                  
+								              }
+									});
+
+						});
+	  
+	  
+	</script> -->
+	
+	
+
+</body>
+</html>

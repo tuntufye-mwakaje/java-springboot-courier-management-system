@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<div class="data-container p-4 bg-primary-subtle">
+					<div class="row justify-content-center">
+						<div class="col-md-11 ">
+							<div class="head fs-18 mb-4">Please Fill Details </div>
+							<br><br>
+							<!-- Form Starts Here  -->
+							
+							<form th:action="@{addemployee}" th:object="${employee}"
+								method="post" id="myForm">
+								
+								
+								<div class="p-4">
+
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Name</label> <input
+															type="text" th:field="*{empname}"
+															class="form-control org-form-input add-org-form-input" />
+														
+													</div>
+<br>
+												
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Email</label> <input
+															type="text" th:field="*{empemail}"
+															class="form-control org-form-input add-org-form-input" />
+														
+													</div>
+													<br>
+													<div class="row">
+
+														<label class="org-form-label my-2 ">designation</label> <input
+															type="text" th:field="*{designation}"
+															class="form-control org-form-input add-org-form-input" />
+														
+													</div>
+													<br>
+													<div class="row">
+
+														<label class="org-form-label my-2 ">Contact</label> <input
+															type="text" th:field="*{empcontact}"
+															class="form-control org-form-input add-org-form-input" />
+														
+													</div>
+													<br><br>
+													<div> <button type="submit">add employee</button>
+													</div>
+												</div>
+												
+						</form>
+						
+						
+						
+						
+						<!-- ---table --- -->
+						<table class="w-full whitespace-no-wrap">
+                  <thead>
+                    <tr
+                      class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                    >
+                      <th class="px-4 py-3">Name</th>
+                      <th class="px-4 py-3">email</th>
+                      <th class="px-4 py-3">contact</th>
+                      <th class="px-4 py-3">Date</th>
+                    </tr>
+                  </thead>
+                 
+                      </table>
+						<!--  table ends-->
+						
+						
+					</div>
+				</div>
+			</div>
+
+</body>
+</html>

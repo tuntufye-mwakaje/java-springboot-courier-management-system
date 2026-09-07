@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript">
+	function getStatesByCountryId(id) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				document.getElementById('states').innerHTML = this.responseText;
+			}
+
+		};
+
+		xhttp.open("GET", "../address/getValuesById?id=" + id
+				+ "&action=getStates", true);
+		xhttp.send();
+
+	}
+	
+	
+	function getDistrictsByStateId(id){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+
+				document.getElementById('districts').innerHTML = this.responseText;
+			}
+
+		};
+
+		xhttp.open("GET", "../address/getValuesById?id=" + id
+				+ "&action=getDistricts", true);
+		xhttp.send();
+	}
+</script>
+
+
+
+<meta charset="UTF-8">
+<title>Address</title>
+</head>
+<body style="background-color: gray;">
+
+
+
+	<div class="container text-center" style="margin-top: 50px; background-color: white;  width: 400px; height: 350px;">
+
+		<div class="bg-white" style="margin-top: 30px;">
+			<div class="form-select">
+			
+				<select class="form-select"
+					th:onChange="getStatesByCountryId(this.value);"
+					aria-label="Default select example"
+					style="width: 273px; height: 35px;">
+					<option value="">Select Country</option>
+					<option th:each="i : ${countryList}" th:value="${i.id}"
+						th:text="${i.countryName}"></option>
+				</select>
+				
+			</div>
+
+			<div class="mt-5 form-select">
+
+				<select 
+				id="states" 
+				class="form-select"
+					onChange="getDistrictsByStateId(this.value);"
+					aria-label="Default select example"
+					style="width: 273px; height: 35px; margin-top: 20px;">
+					<option value="">Select State</option>
+
+
+				</select>
+
+			</div>
+
+			<div class="mt-5 form-select">
+
+				<select id="districts" class="form-select" aria-label="Default select example"
+					style="width: 273px; height: 35px; margin-top: 20px;">
+					<option value="">Select District</option>
+
+
+				</select>
+
+			</div>
+
+
+				<div style="margin-top: 50px;">
+
+					<button style="margin-right: 20px;" type="reset" class="btn btn-danger" >Cancel</button>
+
+					<button type="submit" class="btn btn-success">Save</button>
+
+				</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+
+
+<!-- Side bar -->
+
+<div th:fragment="header" class="sidebar px-3 py-0 bg-primary-subtle">
+			<!-- Arrow -->
+			<div class="sidebar-arrow">
+				<i class="ri-menu-line"></i>
+			</div>
+			
+			<div class="navnav">
+				<!-- logo of the Sidebar -->
+				<a href="dashv2.html"
+					class=" logo-div d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+					<span class="fs-4 heading px-3"> <img
+						th:src="@{/img/courier-logo.png}" alt="" width="170" height="150" />
+
+				</span>
+				</a>
+				<div class="nav-content">
+					<!-- Categories -->
+					<div class="category">
+						<div class="sub-heading">
+							<h6 class="mb-2">Manage</h6>
+						</div>
+						<ul class=" mt-0 nav nav-pills flex-column mb-auto">
+							<li class=""><a th:href="@{/Dashboard}"
+								class="nav-link link-dark sidebar-li"> 
+								<i class="ri-dashboard-line px-0" style="font-size: 20px;"></i> <span>Dashboard</span>
+							</a></li>
+
+							<li class=""><a href="./organization.html"
+								class="nav-link link-dark sidebar-li"> <i
+									class="ri-organization-chart " style="font-size: 20px;"></i> <span>Organization</span>
+							</a></li>
+
+							<li><a href="./members.html" class="nav-link link-dark">
+									<i class="ri-user-line " style="font-size: 20px;"></i> <span>Members</span>
+							</a></li>
+
+							<li><a href="./student.html" class="nav-link link-dark">
+									<i class="ri-admin-line " style="font-size: 20px;"></i> <span>Student
+										Managment</span>
+							</a></li>
+						</ul>
+					</div>
+					<!-- Categories -->
+					<div class="category">
+						<div class="sub-heading">
+							<h6 class="mb-2">Manage</h6>
+						</div>
+						<ul class=" mt-0 nav nav-pills flex-column mb-auto">
+						
+							<li class="collapsible"><a th:href="@{../Dashboard}"
+								class="nav-link link-dark sidebar-li"> <i
+									class="ri-dashboard-line px-0" style="font-size: 20px;"></i> <span>Dashboard</span>
+							</a></li>	
+							
+							<li class="collapsible d-flex flex-column  align-items-start">
+								<a href="#" class="nav-link link-dark sidebar-li "> <i
+									class="ri-organization-chart " style="font-size: 20px;"></i> <span>Organization
+										<span class="sidebar-coll-arrow"><i
+											class="ri-arrow-right-s-line"></i></span>
+								</span>
+							</a>
+								<ul class="sub-menu  px-0 m-0 nav-pills"
+									style="list-style: none;">
+									
+									
+									<li class="collapsible d-flex flex-column"><a href="#1"
+										class="nav-link link-dark sidebar-li">Courier <span
+											class="sidebar-coll-arrow"><i
+												class="ri-arrow-right-s-line"></i></span></a>
+										<ul class="sub-menu px-0 m-0 nav-pills"
+											style="list-style: none;">
+
+										<li class=""><a th:href="@{/courier/courier-form}"
+											class="nav-link link-dark sidebar-li">Book Courier</a></li>
+
+										<li class=""><a th:href="@{/courier/searchCourier}"
+											class="nav-link link-dark sidebar-li">View Courier</a></li>
+
+										<!-- <li class=""><a th:href="@{/courier/view-courier-details}"
+											class="nav-link link-dark sidebar-li">Manage Courier</a></li> -->
+
+										<li class=""><a th:href="@{#}"
+											class="nav-link link-dark sidebar-li">Track Courier</a></li>
+
+									</ul>
+										
+										</li>
+										
+								
+								
+									<li class="collapsible d-flex flex-column "><a href="#1"
+										class="nav-link link-dark sidebar-li">Employess <span
+											class="sidebar-coll-arrow"><i
+												class="ri-arrow-right-s-line"></i></span></a>
+										<ul class="sub-menu px-0 m-0 nav-pills"
+											style="list-style: none;">
+											<li class="collapsible d-flex flex-column "><a
+												href="#11" class="nav-link link-dark sidebar-li">Add
+													Employees <span class="sidebar-coll-arrow"><i
+														class="ri-arrow-right-s-line"></i></span>
+											</a>
+												<ul class="sub-menu  px-0 m-0 nav-pills"
+													style="list-style: none;">
+													<li class="collapsible d-flex flex-column "><a
+														href="#1" class="nav-link link-dark sidebar-li">Departments
+															<span class="sidebar-coll-arrow"><i
+																class="ri-arrow-right-s-line"></i></span>
+													</a>
+														<ul class="sub-menu px-0 m-0 nav-pills"
+															style="list-style: none;">
+															<li class=""><a href="./organization.html"
+																class="nav-link link-dark sidebar-li text-nowrap">Software
+																	Developer</a></li>
+															<li class=""><a href="#21"
+																class="nav-link link-dark side   bar-li">Java
+																	Developer</a></li>
+															<li class=""><a href="#31"
+																class="nav-link link-dark sidebar-li">Python
+																	Developer</a></li>
+
+														</ul></li>
+													<li class=""><a href="#2"
+														class="nav-link link-dark sidebar-li">Payments</a></li>
+													<li class=""><a href="#3"
+														class="nav-link link-dark sidebar-li">Departments</a></li>
+
+												</ul></li>
+											<li class=""><a href="#21"
+												class="nav-link link-dark sidebar-li">View Employees</a></li>
+											<li class=""><a href="#31"
+												class="nav-link link-dark sidebar-li">ID Card</a></li>
+
+										</ul></li>
+									<li class=""><a href="#2"
+										class="nav-link link-dark sidebar-li">Payments</a></li>
+									<li class=""><a href="#3"
+										class="nav-link link-dark sidebar-li">Departments</a></li>
+
+								</ul>
+							</li>
+
+
+							<!-- Add more list items here -->
+						</ul>
+					</div>
+					<div class="category">
+						<div class="sub-heading">
+							<h6 class="mb-2">Admin</h6>
+						</div>
+						<ul class=" mt-0 nav nav-pills flex-column mb-auto">
+							<li><a href="./employee.html" class="nav-link link-dark">
+									<i class="ri-team-line"></i> <span>Employees</span>
+							</a></li>
+							
+							<li><a th:href="@{../country}" class="nav-link link-dark">
+									<i class="ri-team-line"></i> <span>Country</span>
+							</a></li>
+							<li><a th:href="@{../state/state}" class="nav-link link-dark">
+									<i class="ri-team-line"></i> <span>State</span>
+							</a></li>
+							<li><a th:href="@{../district/district}"class="nav-link link-dark">
+									<i class="ri-team-line"></i> <span>District</span>
+							</a></li>
+							
+							<li><a th:href="@{#}" class="nav-link link-dark"> <i
+									class="ri-folders-line"></i> <span>Projects</span>
+							</a></li>
+
+							<li><a href="#" class="nav-link link-dark"> <i
+									class="ri-file-chart-line"></i> <span>Reports</span>
+							</a></li>
+							<li><a href="#" class="nav-link link-dark"> <i
+									class="ri-settings-2-line"></i> <span>Settings</span>
+							</a></li>
+
+						</ul>
+					</div>
+					<!-- Categories End -->
+					
+					
+					
+					
+					
+					
+				</div>
+				<br>
+
+			
+			
+			</div>
+		</div>
+		
+		<!-- /Side bar -->
+		
+		
+		
+		
+		<!-- Top Bar -->
+		
+		<div th:fragment="topbar" class="alert-box text-center">
+				Welcome to <span style="padding-right: 5px; padding-left: 5px;">QuickDispatch</span>
+				
+				
+				<div class="dropdown profile-container">
+					<a 
+						href="#"
+						class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle mb-2"
+						id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+						<img th:src="@{/img/me.png}" alt="" width="50" height="50"
+						class="rounded-circle bg-white" style="border: 1px solid #b46b2b;">
+						
+						 <!-- <span class="text-white">Profile</span> -->
+					</a>
+
+					
+					<ul
+						class="dropdown-menu profile-menu text-small shadow fade bg-primary-subtle"
+						aria-labelledby="dropdownUser2">
+						<li><a class="dropdown-item" href="#">New project...</a></li>
+						<li><a class="dropdown-item" href="#">Settings</a></li>
+						<li><a class="dropdown-item" href="#">Profile</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" th:href="@{logout}">Sign out</a></li>
+					</ul>
+					
+				</div> 
+			</div> 
+			
+			
+		
+		
+		<!-- /Top Bar -->
+
+
+</body>
+</html>
