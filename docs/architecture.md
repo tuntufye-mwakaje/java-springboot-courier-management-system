@@ -1,56 +1,47 @@
-\# System Architecture
+# System Architecture
 
+## 1. Overview
 
+The Courier Management System is a Java-based web application developed
+using Spring Boot and organized using a layered architecture.
 
-\## Overview
+The architecture separates presentation, request handling, application
+logic, persistence, and database responsibilities.
 
-
-
-The Courier Management System is a Java-based web application
-
-developed using the Spring Boot framework and a layered application
-
-architecture.
-
-
-
-\## Architectural Flow
-
-
+## 2. Architectural Flow
 
 ```text
-
-User / Browser
-
-&#x20;     |
-
-&#x20;     v
-
-Presentation Layer
-
-HTML / CSS / JavaScript / Templates
-
-&#x20;     |
-
-&#x20;     v
-
-Controller Layer
-
-&#x20;     |
-
-&#x20;     v
-
-Service Layer
-
-&#x20;     |
-
-&#x20;     v
-
-Repository Layer
-
-&#x20;     |
-
-&#x20;     v
-
-MySQL Database
-
++-----------------------+
+|     User / Browser    |
++-----------+-----------+
+            |
+            v
++-----------------------+
+|  Presentation Layer   |
+| HTML / CSS / JS /     |
+| Thymeleaf Templates   |
++-----------+-----------+
+            |
+            v
++-----------------------+
+|   Controller Layer    |
+| Handles Web Requests  |
++-----------+-----------+
+            |
+            v
++-----------------------+
+|      Service Layer    |
+| Application /         |
+| Business Logic        |
++-----------+-----------+
+            |
+            v
++-----------------------+
+|    Repository Layer   |
+| Data Access / JPA     |
++-----------+-----------+
+            |
+            v
++-----------------------+
+|     MySQL Database    |
++-----------------------+
